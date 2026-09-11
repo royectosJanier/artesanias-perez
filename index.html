@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Artesanías Pérez</title>
-    <link rel="manifest" href="manifest.json">
     <style>
         :root {
             --primary: #8B4513;
@@ -111,14 +110,8 @@
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            transition: background 0.3s;
         }
 
-        .btn:active {
-            background-color: #5c2d0c;
-        }
-
-        /* Botón Flotante del Carrito */
         .cart-float {
             position: fixed;
             bottom: 20px;
@@ -144,7 +137,6 @@
             font-size: 0.9rem;
         }
 
-        /* Modal del Carrito (Oculto por defecto) */
         .modal {
             display: none;
             position: fixed;
@@ -233,12 +225,10 @@
         <div class="grid" id="productos-grid"></div>
     </div>
 
-    <!-- Botón flotante del carrito -->
     <div class="cart-float" onclick="toggleModal(true)">
         🛒 Mi Pedido <span class="badge" id="cart-count">0</span>
     </div>
 
-    <!-- Modal del carrito -->
     <div class="modal" id="cart-modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -265,25 +255,17 @@
     </div>
 
     <script>
-        // ==========================================
-        // CATÁLOGO DE PRODUCTOS
-        // ==========================================
         const productos = [
             {
                 id: 1,
                 nombre: "Bolso Tejido Artesanal",
                 precio: 65000,
-                descripcion: "Bolso elaborado completamente a mano con tejido de fibra resistente, tonos café y correa amplia.",
+                descripcion: "Bolso elaborado completamente a mano con tejido de fibra resistente, tonos beige/café y correa amplia.",
                 imagen: "https://royectosjanier.github.io/artesanias-perez/bolso.jpg"
             }
         ];
 
-        // NÚMERO DE WHATSAPP
         const NUMERO_WHATSAPP = "573157198126";
-
-        // ==========================================
-        // LÓGICA DEL CARRITO Y TIENDA
-        // ==========================================
         let carrito = [];
 
         function renderProductos() {
@@ -293,7 +275,7 @@
             productos.forEach(p => {
                 grid.innerHTML += `
                     <div class="card">
-                        <img src="${p.imagen}" alt="${p.nombre}" onerror="this.src='https://via.placeholder.com/300x200?text=Artesanias+Perez'">
+                        <img src="${p.imagen}" alt="${p.nombre}" onerror="this.style.display='none'">
                         <div class="card-content">
                             <h3>${p.nombre}</h3>
                             <p>${p.descripcion}</p>
@@ -385,7 +367,6 @@
             window.open(url, '_blank');
         }
 
-        // Inicializar la tienda
         renderProductos();
     </script>
 </body>
