@@ -1,0 +1,17 @@
+{
+  "name": "Artesanías Pérez",
+  "short_name": "Artesanías",
+  "description": "Tienda en línea de productos artesanales: costureros, bolsos, canastos, sombreros y llaveros.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FAF8F5",
+  "theme_color": "#8B4513",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/3081/3081559.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
