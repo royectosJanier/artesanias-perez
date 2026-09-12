@@ -7,10 +7,13 @@
     <style>
         :root {
             --primary: #8B4513;
+            --primary-dark: #6b350f;
             --secondary: #D2B48C;
             --bg: #FDFBF7;
             --text: #2C221E;
             --accent: #25D366;
+            --wompi: #1a1a2e;
+            --gold: #C89B3C;
         }
 
         * {
@@ -23,29 +26,30 @@
         body {
             background-color: var(--bg);
             color: var(--text);
-            padding-bottom: 80px;
+            padding-bottom: 90px;
         }
 
         header {
             background-color: var(--primary);
             color: white;
             text-align: center;
-            padding: 1.5rem 1rem;
+            padding: 1.8rem 1rem;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
         header h1 {
-            font-size: 1.8rem;
+            font-size: 1.9rem;
             margin-bottom: 0.3rem;
+            letter-spacing: 0.5px;
         }
 
         header p {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             opacity: 0.9;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 1rem;
         }
@@ -54,23 +58,76 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 1.5rem;
-            margin-top: 1rem;
+            margin-top: 1.2rem;
         }
 
         .card {
             background: white;
-            border-radius: 12px;
+            border-radius: 14px;
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .card img {
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.14);
+        }
+
+        .card-img-wrap {
+            position: relative;
             width: 100%;
-            height: 250px;
+            height: 240px;
+            overflow: hidden;
+            background-color: var(--secondary);
+            cursor: zoom-in;
+        }
+
+        .card-img-wrap img {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
-            background-color: #eee;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        .card-img-wrap:hover img {
+            transform: scale(1.08);
+        }
+
+        .zoom-hint {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            background: rgba(0,0,0,0.55);
+            color: white;
+            font-size: 0.72rem;
+            padding: 3px 9px;
+            border-radius: 20px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .card-img-wrap:hover .zoom-hint {
+            opacity: 1;
+        }
+
+        .stock-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--accent);
+            color: white;
+            font-size: 0.72rem;
+            font-weight: bold;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .stock-badge.agotado {
+            background: #b33;
         }
 
         .card-content {
@@ -81,23 +138,23 @@
         }
 
         .card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.15rem;
+            margin-bottom: 0.4rem;
             color: var(--primary);
         }
 
         .card p {
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: #666;
-            margin-bottom: 1rem;
+            margin-bottom: 0.9rem;
             flex-grow: 1;
         }
 
         .price {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             font-weight: bold;
             color: var(--primary);
-            margin-bottom: 1rem;
+            margin-bottom: 0.9rem;
         }
 
         .btn {
@@ -105,11 +162,19 @@
             color: white;
             border: none;
             padding: 0.8rem;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 1rem;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
+            transition: background 0.15s ease;
+        }
+
+        .btn:hover { background-color: var(--primary-dark); }
+
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
         }
 
         .cart-float {
@@ -127,6 +192,7 @@
             align-items: center;
             gap: 10px;
             z-index: 100;
+            border: none;
         }
 
         .badge {
@@ -144,18 +210,19 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.55);
             z-index: 200;
             justify-content: center;
             align-items: center;
+            padding: 1rem;
         }
 
         .modal-content {
             background: white;
-            width: 90%;
+            width: 100%;
             max-width: 500px;
-            max-height: 80vh;
-            border-radius: 12px;
+            max-height: 85vh;
+            border-radius: 14px;
             padding: 1.5rem;
             overflow-y: auto;
         }
@@ -172,8 +239,9 @@
         .close-btn {
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             cursor: pointer;
+            line-height: 1;
         }
 
         .cart-item {
@@ -182,8 +250,19 @@
             align-items: center;
             margin-bottom: 1rem;
             border-bottom: 1px solid #eee;
-            padding-bottom: 0.5rem;
+            padding-bottom: 0.6rem;
+            gap: 0.6rem;
         }
+
+        .cart-item img {
+            width: 46px;
+            height: 46px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .cart-item-info { flex-grow: 1; }
 
         .cart-item-controls {
             display: flex;
@@ -192,11 +271,13 @@
         }
 
         .cart-item-controls button {
-            background: #ddd;
+            background: #eee;
             border: none;
-            padding: 2px 8px;
-            border-radius: 4px;
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
             font-weight: bold;
+            cursor: pointer;
         }
 
         .payment-info {
@@ -204,13 +285,110 @@
             padding: 1rem;
             border-radius: 8px;
             margin-top: 1rem;
-            font-size: 0.9rem;
+            font-size: 0.88rem;
         }
+
+        .pay-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            margin-top: 1rem;
+        }
+
+        .btn-online-pay {
+            background-color: var(--wompi);
+            color: white;
+        }
+
+        .btn-online-pay:hover { background-color: #2a2a4a; }
 
         .btn-whatsapp {
             background-color: var(--accent);
             color: white;
-            margin-top: 1rem;
+        }
+
+        .btn-whatsapp:hover { background-color: #1fae56; }
+
+        .pay-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #999;
+            font-size: 0.8rem;
+            margin: 0.3rem 0;
+        }
+
+        .pay-divider::before, .pay-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #ddd;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 300;
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+            padding: 2rem;
+        }
+
+        .lightbox img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .lightbox .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            color: white;
+            font-size: 2.2rem;
+        }
+
+        .empty-msg {
+            text-align: center;
+            color: #888;
+            padding: 1rem 0;
+        }
+
+        .admin-note {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        details.admin-note summary {
+            cursor: pointer;
+            color: var(--primary);
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
+        details.admin-note div {
+            font-size: 0.82rem;
+            color: #555;
+            background: #f4efe8;
+            padding: 0.8rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            line-height: 1.5;
+        }
+
+        code {
+            background: #eee;
+            padding: 1px 5px;
+            border-radius: 4px;
+            font-size: 0.8rem;
         }
     </style>
 </head>
@@ -225,9 +403,23 @@
         <div class="grid" id="productos-grid"></div>
     </div>
 
-    <div class="cart-float" onclick="toggleModal(true)">
-        🛒 Mi Pedido <span class="badge" id="cart-count">0</span>
+    <div class="admin-note">
+        <details class="admin-note">
+            <summary>⚙️ Cómo agregar tus propios productos y fotos reales</summary>
+            <div>
+                Busca el arreglo <code>productos</code> en el código (abajo, en la etiqueta &lt;script&gt;).
+                Cada producto tiene un campo <code>imagen</code>. Para usar una foto real, sube tu foto a un
+                servicio gratuito como <code>imgur.com</code> o <code>postimages.org</code>, copia el link
+                directo de la imagen (termina en .jpg o .png) y pégalo ahí, reemplazando la ilustración.
+                Si dejas <code>imagen: null</code>, la tienda genera automáticamente una ilustración de
+                respaldo bonita según la <code>categoria</code> del producto.
+            </div>
+        </details>
     </div>
+
+    <button class="cart-float" onclick="toggleModal(true)">
+        🛒 Mi Pedido <span class="badge" id="cart-count">0</span>
+    </button>
 
     <div class="modal" id="cart-modal">
         <div class="modal-content">
@@ -243,60 +435,164 @@
             </div>
 
             <div class="payment-info">
-                <strong>Métodos de Pago Aceptados:</strong>
-                <p>• Nequi / Daviplata / Bancolombia</p>
+                <strong>Métodos de pago aceptados:</strong>
+                <p>• Pago en línea con tarjeta, Nequi o PSE (automático)</p>
+                <p>• Nequi / Daviplata / Bancolombia manual</p>
                 <p>• Efectivo contra entrega (según ubicación)</p>
             </div>
 
-            <button class="btn btn-whatsapp" onclick="enviarPedidoWhatsApp()">
-                📲 Confirmar Pedido por WhatsApp
-            </button>
+            <div class="pay-options">
+                <button class="btn btn-online-pay" onclick="pagarEnLinea()">
+                    💳 Pagar en línea ahora
+                </button>
+                <div class="pay-divider">o</div>
+                <button class="btn btn-whatsapp" onclick="enviarPedidoWhatsApp()">
+                    📲 Confirmar pedido por WhatsApp
+                </button>
+            </div>
         </div>
     </div>
 
+    <div class="lightbox" id="lightbox" onclick="cerrarLightbox()">
+        <button class="close-btn">&times;</button>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <!-- Contenedor donde se inyecta el botón/widget de Wompi al pagar en línea -->
+    <div id="wompi-widget-container" style="display:none;"></div>
+
     <script>
+        // ============================================================
+        // ⚠️ CONFIGURACIÓN DE PAGOS EN LÍNEA (Wompi)
+        // Crea una cuenta gratis de comercio en https://comercios.wompi.co
+        // y reemplaza esta llave pública por la tuya (empieza con "pub_").
+        // Mientras esta sea la llave de prueba, los pagos NO son reales.
+        // ============================================================
+        const WOMPI_PUBLIC_KEY = "pub_test_REEMPLAZA_ESTA_LLAVE";
+        const WOMPI_MONEDA = "COP";
+
+        const NUMERO_WHATSAPP = "573157198126";
+
+        // Genera una ilustración de respaldo (SVG) coherente por categoría,
+        // usada solo cuando un producto no tiene foto real todavía.
+        function ilustracionRespaldo(nombre, categoria) {
+            const paletas = {
+                bolsos:    { fondo: "%23D2B48C", figura: "%238B4513" },
+                textiles:  { fondo: "%23E8DCC8", figura: "%23A0522D" },
+                ceramica:  { fondo: "%23E3D5C3", figura: "%23B5651D" },
+                joyeria:   { fondo: "%23F0E6D6", figura: "%23C89B3C" },
+                madera:    { fondo: "%23DCC7A8", figura: "%236B4226" }
+            };
+            const p = paletas[categoria] || paletas.bolsos;
+            const texto = encodeURIComponent(nombre);
+            return `data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'>
+                <rect width='100%25' height='100%25' fill='${p.fondo}'/>
+                <circle cx='200' cy='140' r='85' fill='${p.figura}'/>
+                <path d='M150 100 Q200 55 250 100' stroke='%232C221E' stroke-width='7' fill='none'/>
+                <text x='50%25' y='53%25' fill='white' font-size='17' font-family='sans-serif' text-anchor='middle'>${texto}</text>
+                <text x='50%25' y='90%25' fill='%238B4513' font-size='12' font-family='sans-serif' text-anchor='middle' opacity='0.7'>Foto próximamente</text>
+            </svg>`;
+        }
+
+        // ------------------------------------------------------------
+        // CATÁLOGO — agrega, edita o borra productos aquí
+        // imagen: pon la URL de una foto real, o deja null para usar
+        //         la ilustración de respaldo automática.
+        // ------------------------------------------------------------
         const productos = [
             {
                 id: 1,
                 nombre: "Bolso Tejido Artesanal",
+                categoria: "bolsos",
                 precio: 65000,
-                descripcion: "Bolso elaborado completamente a mano con tejido de fibra resistente, tonos café y correa amplia.",
-                imagen: "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='300' viewBox='0 0 400 300'><rect width='100%' height='100%' fill='%23D2B48C'/><circle cx='200' cy='150' r='80' fill='%238B4513'/><path d='M150 110 Q200 60 250 110' stroke='%232C221E' stroke-width='8' fill='none'/><text x='50%' y='52%' fill='white' font-size='18' font-family='sans-serif' text-anchor='middle'>Bolso Artesanal</text><text x='50%' y='62%' fill='%23FDFBF7' font-size='14' font-family='sans-serif' text-anchor='middle'>Tejido Café</text></svg>"
+                stock: 5,
+                descripcion: "Elaborado completamente a mano con tejido de fibra resistente, tonos café y correa amplia.",
+                imagen: null
+            },
+            {
+                id: 2,
+                nombre: "Ruana de Lana Andina",
+                categoria: "textiles",
+                precio: 98000,
+                stock: 3,
+                descripcion: "Tejida en telar tradicional con lana virgen, ideal para climas fríos.",
+                imagen: null
+            },
+            {
+                id: 3,
+                nombre: "Vasija de Barro Pintada a Mano",
+                categoria: "ceramica",
+                precio: 42000,
+                stock: 0,
+                descripcion: "Pieza única moldeada y horneada de forma artesanal, decorada con motivos tradicionales.",
+                imagen: null
+            },
+            {
+                id: 4,
+                nombre: "Aretes en Semillas Naturales",
+                categoria: "joyeria",
+                precio: 25000,
+                stock: 12,
+                descripcion: "Elaborados con semillas recolectadas de forma responsable y acabado en madera.",
+                imagen: null
             }
         ];
 
-        const NUMERO_WHATSAPP = "573157198126";
         let carrito = [];
+
+        function imagenDe(p) {
+            return p.imagen || ilustracionRespaldo(p.nombre, p.categoria);
+        }
 
         function renderProductos() {
             const grid = document.getElementById('productos-grid');
             grid.innerHTML = '';
 
             productos.forEach(p => {
+                const agotado = p.stock <= 0;
+                const img = imagenDe(p);
+
                 grid.innerHTML += `
                     <div class="card">
-                        <img src="${p.imagen}" alt="${p.nombre}">
+                        <div class="card-img-wrap" onclick="abrirLightbox('${img.replace(/'/g, "\\'")}')">
+                            <img src="${img}" alt="${p.nombre}" loading="lazy">
+                            <span class="stock-badge ${agotado ? 'agotado' : ''}">
+                                ${agotado ? 'Agotado' : 'Disponible'}
+                            </span>
+                            <span class="zoom-hint">🔍 Ver en grande</span>
+                        </div>
                         <div class="card-content">
                             <h3>${p.nombre}</h3>
                             <p>${p.descripcion}</p>
                             <div class="price">$${p.precio.toLocaleString()}</div>
-                            <button class="btn" onclick="agregarAlCarrito(${p.id})">Agregar al Carrito</button>
+                            <button class="btn" ${agotado ? 'disabled' : ''} onclick="agregarAlCarrito(${p.id})">
+                                ${agotado ? 'Sin stock' : 'Agregar al Carrito'}
+                            </button>
                         </div>
                     </div>
                 `;
             });
         }
 
+        function abrirLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+
+        function cerrarLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
         function agregarAlCarrito(id) {
             const producto = productos.find(p => p.id === id);
-            const existe = carrito.find(item => item.id === id);
+            if (!producto || producto.stock <= 0) return;
 
+            const existe = carrito.find(item => item.id === id);
             if (existe) {
-                existe.cantidad++;
+                if (existe.cantidad < producto.stock) existe.cantidad++;
             } else {
                 carrito.push({ ...producto, cantidad: 1 });
             }
-
             actualizarCarrito();
         }
 
@@ -322,19 +618,20 @@
             itemsContainer.innerHTML = '';
 
             if (carrito.length === 0) {
-                itemsContainer.innerHTML = '<p style="text-align:center; color:#888;">El carrito está vacío.</p>';
+                itemsContainer.innerHTML = '<p class="empty-msg">El carrito está vacío.</p>';
                 return;
             }
 
             carrito.forEach(item => {
                 itemsContainer.innerHTML += `
                     <div class="cart-item">
-                        <div>
+                        <img src="${imagenDe(item)}" alt="${item.nombre}">
+                        <div class="cart-item-info">
                             <strong>${item.nombre}</strong><br>
                             <small>$${item.precio.toLocaleString()} c/u</small>
                         </div>
                         <div class="cart-item-controls">
-                            <button onclick="cambiarCantidad(${item.id}, -1)">-</button>
+                            <button onclick="cambiarCantidad(${item.id}, -1)">−</button>
                             <span>${item.cantidad}</span>
                             <button onclick="cambiarCantidad(${item.id}, 1)">+</button>
                         </div>
@@ -367,7 +664,53 @@
             window.open(url, '_blank');
         }
 
+        // Genera y dispara el botón de pago en línea de Wompi con el
+        // total actual del carrito (funciona sin backend propio, usando
+        // el checkout alojado por Wompi).
+        function pagarEnLinea() {
+            if (carrito.length === 0) {
+                alert("Agrega al menos un producto al carrito para pagar en línea.");
+                return;
+            }
+
+            if (WOMPI_PUBLIC_KEY.includes("REEMPLAZA_ESTA_LLAVE")) {
+                alert(
+                    "El pago en línea aún no está activado.\n\n" +
+                    "El dueño de la tienda debe crear una cuenta gratis en " +
+                    "comercios.wompi.co y poner su llave pública real en el código " +
+                    "(variable WOMPI_PUBLIC_KEY) para poder recibir pagos con tarjeta, " +
+                    "Nequi o PSE directamente a su cuenta.\n\n" +
+                    "Mientras tanto, puedes confirmar tu pedido por WhatsApp."
+                );
+                return;
+            }
+
+            const total = carrito.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+            const referencia = "pedido-" + Date.now();
+            const amountInCents = total * 100;
+
+            const container = document.getElementById('wompi-widget-container');
+            container.innerHTML = '';
+
+            const form = document.createElement('form');
+            const script = document.createElement('script');
+            script.src = "https://checkout.wompi.co/widget.js";
+            script.setAttribute('data-render', 'button');
+            script.setAttribute('data-public-key', WOMPI_PUBLIC_KEY);
+            script.setAttribute('data-currency', WOMPI_MONEDA);
+            script.setAttribute('data-amount-in-cents', amountInCents);
+            script.setAttribute('data-reference', referencia);
+            script.setAttribute('data-redirect-url', window.location.href);
+
+            form.appendChild(script);
+            container.appendChild(form);
+
+            // El widget de Wompi se auto-inicializa y abre su checkout
+            // seguro alojado por ellos (no maneja datos de tarjeta aquí).
+        }
+
         renderProductos();
+        actualizarCarrito();
     </script>
 </body>
 </html>
