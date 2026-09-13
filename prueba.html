@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba</title>
+</head>
+<body style="font-family: sans-serif; padding: 20px; text-align: center;">
+    <h1 id="resultado" style="color: red;">JavaScript NO está funcionando ❌</h1>
+    <p id="detalle"></p>
+
+    <script>
+        document.getElementById('resultado').innerText = '¡JavaScript SÍ funciona! ✅';
+        document.getElementById('resultado').style.color = 'green';
+        document.getElementById('detalle').innerText = 'Navegador: ' + navigator.userAgent;
+    </script>
+</body>
+</html>
