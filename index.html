@@ -919,6 +919,9 @@
 
             const container = document.getElementById('wompi-widget-container');
             container.innerHTML = '';
+            container.style.display = 'block';
+            container.style.textAlign = 'center';
+            container.style.padding = '1rem';
 
             const form = document.createElement('form');
             const script = document.createElement('script');
@@ -932,6 +935,16 @@
 
             form.appendChild(script);
             container.appendChild(form);
+
+            const aviso = document.createElement('p');
+            aviso.style.fontSize = '0.85rem';
+            aviso.style.color = '#666';
+            aviso.innerText = 'Toca el botón de pago que aparece abajo:';
+            container.insertBefore(aviso, form);
+
+            setTimeout(() => {
+                container.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 600);
 
             // El widget de Wompi se auto-inicializa y abre su checkout
             // seguro alojado por ellos (no maneja datos de tarjeta aquí).
