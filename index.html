@@ -394,6 +394,14 @@
 </head>
 <body>
 
+    <div id="error-visible" style="display:none; background:#c0392b; color:white; padding:1rem; font-family:monospace; font-size:0.8rem; white-space:pre-wrap; word-break:break-all;"></div>
+    <script>
+        window.addEventListener('error', function(e) {
+            var box = document.getElementById('error-visible');
+            box.style.display = 'block';
+            box.innerText = 'ERROR DETECTADO:\n' + e.message + '\nArchivo: ' + e.filename + '\nLínea: ' + e.lineno + ':' + e.colno;
+        });
+    </script>
     <header>
         <h1>Artesanías Pérez</h1>
         <p>Tradición y arte hecho a mano</p>
@@ -885,6 +893,4 @@
                 "e/t6VnjH7prgVeRoahLt1JYkBKNgYJzjqf6VryRvcWxAYB1Qk7u+OcD8KorFu1AlhkiNT+OCP61oSSGGF8DAwR+YxXhSeiR9ClrJkMEBiaSNtpKseVYMD9COD+FS2lvl+ARweKW0GbXzV6Y6VYtZVSYZ7ITSb3KS0P/W+bNLs/NJPfNdJMrQ6UqlQCJAMj8ax9EuA0m0",
                 "DjBOa3roebZKN3BfNfAzbb1P0K2mhTVSLWTBODgGq+oxEaFIwznZk/nWksIaxmAPcD61W10LbeHL3thAB+dapGTdjkfBKzHX9HdDJGy2FwwlhYqUJm29R7Aj6NXbarF+5kAHXGK5PwXdy3HiSzs3bfDaaSVjDHHl7595AHrkk/ifWuy1IhoyO5q8Rf2kf66mGG2kzlL2",
                 "IoqnGc81jXiGRgOgxzXVXqB4wMcisC4iDTYZgo+nFd1DVmGIdkf/2f/bAEMADAgJCwkIDAsKCw4NDA4SHhQSERESJRscFh4sJy4uKycrKjE3RjsxNEI0Kis9Uz5CSEpOT04vO1ZcVUxbRk1OS//bAEMBDQ4OEhASJBQUJEsyKzJLS0tLS0tLS0tLS0tLS0tLS0tLS0tL",
-                "S0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS//AABEIAfQBGQMBIgACEQEDEQH/xAAbAAACAwEBAQAAAAAAAAAAAAABAgADBAUGB//EAEYQAAIBAwIEBAQEBQEGAgoDAAECAwAEERIhBTFBURMiYXEygZGhBhRCsRUjUsHR8DNTYpLh8SSTFiU0Q1RVY3KCspTC0v/E",
-                "ABgBAQEBAQEAAAAAAAAAAAAAAAABAgME/8QAIhEBAQACAgICAwEBAAAAAAAAAAECERIhMVETQQNhcSKB/9oADAMBAAIRAxEAPwD1DdTjpUK7HT7KPnTMOw2JxQ6ZHtWnIrDkRyJ+1Dv2xT4xkCkOx3GQWx8qADlnrzxUI59xiiSCNQO3Q1OY/vQKCVYE7gHcdxQ0YJ36",
-                "U4GcEcz9qgGPXtQKMnOfahgAHvnFHO+nn29RTKAzZG4A6UCpnkeWdqg+Ig7VCDo0g77b9MimXdcf1UEUHNQHIz6UfhBOMgEgiog8zLnJU5BoCNqZds+nKlj2Hz5U6jAwPagVRjOOpyaKfG4
+                "S0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS//AABEIAfQBGQMBIgACEQEDEQH
